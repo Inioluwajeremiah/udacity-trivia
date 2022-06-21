@@ -1,5 +1,8 @@
 # Trivia API
 
+Udacity is committed to fostering a sense of community among its workers and students. A group of team members came up with the concept of holding trivia on a regular basis and established a website to administer the trivia app and play the game, but their API knowledge is limited and has to be expanded.
+I'm helping them finish the trivia app as part of the criterion for earning a nanodegree certificate in fullstack web development, so they can start having trivia and seeing who's the most knowledgable of the group. The application must include the following functions:
+
 ## Setting up the Backend
 
 ### Install Dependencies
@@ -264,7 +267,7 @@ General:
 * Creates an endpoint to POST a new question, which will require the question and answer text, category, and difficulty score.
 * Returns the id of the created question, success value, total questions, and question list based on current page number to update the frontend
 Testing
-Sample: <code> curl http://127.0.0.1:5000/books?page=3 -X POST -H "Content-Type: application/json" -d '{"question": "Who is the 45th president of the United States?", "answer":"Donald Trump", "category":"5", "difficulty":"4"}' </code>
+Sample: <code> curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"question": "Who is the 45th president of the United States?", "answer":"Donald Trump", "category":"5", "difficulty":"4"}' </code>
 
 <pre>
     {
@@ -353,7 +356,7 @@ Sample: <code> curl http://127.0.0.1:5000/books?page=3 -X POST -H "Content-Type:
 General: 
 * Creates a POST endpoint to get questions based on a search term.
 * Returns any questions, total number of questions for whom the search term is a substring of the question and success true value
-Sample:  <code> curl http://127.0.0.1:5000/books?page=3 -X POST -H "Content-Type: application/json" -d '{"searchTerm": "movie"}' </code>
+Sample:  <code> curl http://127.0.0.1:5000/questions -X POST -H "Content-Type: application/json" -d '{"searchTerm": "movie"}' </code>
 
 <pre>
     {
@@ -458,13 +461,16 @@ To deploy the tests, run
 ## Error Handling
 Errors are returned as JSON objects in the following format:
 
-{
-    "success": False, 
-    "error": 400,
-    "message": "bad request"
-}
+<pre>
+
+    {
+        "success": False, 
+        "error": 400,
+        "message": "bad request"
+    }
+</pre>
 The API will return three error types when requests fail:
 
-404: Resource Not Found
-405: Method Not Allowed
-422: Unprocessable
+* 404: Resource Not Found
+* 405: Method Not Allowed
+* 422: Unprocessable

@@ -60,8 +60,7 @@ def create_app(test_config=None):
             # print(category)
             return jsonify({
                 "Success": True,
-                "categories": category,
-                "Status": "OK"
+                "categories": category
             }), 200
 
     """
@@ -93,9 +92,7 @@ def create_app(test_config=None):
             "Success": True,
             "questions": current_questions,
             "categories": get_category,
-            "currentCategory": "",
             "total_questions": len(Question.query.all()),
-            "Status": "OK"
         }), 200
 
     """
@@ -171,8 +168,9 @@ def create_app(test_config=None):
                     question=question, answer=answer, category=category, difficulty=difficulty)
                 new_question.insert()
 
-                selection = Question.query.order_by(Question.id).all()
-                current_questions = paginate_questions(request, selection)
+                select_questions = Question.query.order_by(Question.id).all()
+                current_questions = paginate_questions(
+                    request, select_questions)
 
                 return jsonify(
                     {
@@ -233,7 +231,7 @@ def create_app(test_config=None):
             ), 200
 
         except:
-            abort(404)
+            abort(422)
 
     """
     @TODO:
@@ -285,7 +283,7 @@ def create_app(test_config=None):
         return jsonify({
             "success": False,
             "error": 404,
-            "message": "Not found"
+            "message": "Resource Not Found"
         }), 404
 
     @app.errorhandler(422)
@@ -293,11 +291,11 @@ def create_app(test_config=None):
         return jsonify({
             "success": False,
             "error": 422,
-            "message": "unprocessable"
+            "message": "Unprocessable"
         }), 422
 
     @app.errorhandler(405)
-    def unprocessable(error):
+    def method_not_allowed(error):
         return jsonify({
             "success": False,
             "error": 405,

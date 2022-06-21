@@ -35,11 +35,4 @@ Werkzeug
 # set FLASK_APP=.
 # set FLASK_ENV=development
 # flask run
-
-
-# curl -X GET -H "Content-Type: application/json"  http://127.0.0.1:5000/questions   
-
-# git remote rm origin
-# git remote add origin https://github.com/Inioluwajeremiah/udacity-trivia.git
-# git commit -m "inital commit"
-# git push origin master
+  

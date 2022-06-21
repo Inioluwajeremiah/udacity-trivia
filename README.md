@@ -3,6 +3,12 @@
 Udacity is committed to fostering a sense of community among its workers and students. A group of team members came up with the concept of holding trivia on a regular basis and established a website to administer the trivia app and play the game, but their API knowledge is limited and has to be expanded.
 I'm helping them finish the trivia app as part of the criterion for earning a nanodegree certificate in fullstack web development, so they can start having trivia and seeing who's the most knowledgable of the group. The application must include the following functions:
 
+* Display questions - Questions should show the question, category, and difficulty rating by default and can show/hide the answer.
+* Delete questions - Users can delete questions from the frontend by clicking on the delete icon. This removes the question with a specific question ID from the database.
+* Add questions - Users can add questions and answers. Both question and answer fields are required.
+* Search - Users can search for questions based on a text query string and the result(s) displayed provided that the query string matches a substring of questions in the database.
+* Play the quiz game - Users can play the quiz game depending on the choice of selection. Users can select 'ALL' to display a list of all questions at random or select a specific category to display a list of questions at random within the selected category.
+
 ## Setting up the Backend
 
 ### Install Dependencies

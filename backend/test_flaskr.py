@@ -14,13 +14,13 @@ class TriviaTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client
-        self.database_name = "trivia_test"
+        self.database_name = "trivai_testII"
         self.database_path = f'postgresql://postgres:Malibowe100%@localhost:5432/{self.database_name}'
         # "postgresql://{}/{}".format(
         #     'localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
-        self.new_question = {"question": "What programming language is used in flask micro framework",
+        self.new_question = {"question": "What programming language is used in flask micro framework?",
                              "answer": "Python", "category": 5, "difficulty": 2}
 
         # binds the app to the current context
@@ -79,12 +79,12 @@ class TriviaTestCase(unittest.TestCase):
         self.assertTrue(len(data["questions"]))
 
     def test_delete_question(self):
-        res = self.client().delete("/questions/10")
+        res = self.client().delete("/questions/9")
         data = json.loads(res.data)
-        question = Question.query.filter(Question.id == 10).one_or_none()
+        question = Question.query.filter(Question.id == 9).one_or_none()
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
-        self.assertEqual(data["deleted"], 10)
+        self.assertEqual(data["deleted"], 9)
         self.assertTrue(data["total_questions"])
         self.assertEqual(question, None)
 
@@ -105,26 +105,31 @@ class TriviaTestCase(unittest.TestCase):
     def test_create_new_questions(self):
         res = self.client().post("/questions", json=self.new_question)
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data["created"], 1)
         self.assertTrue(data["total_questions"])
         self.assertTrue(len(data["questions"]))
 
+    def test_400_create_new_questions_with_no_parameter(self):
+        res = self.client().post("/questions")
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "Bad Request")
+
     def test_get_question_search_with_results(self):
         res = self.client().post("/questions", json={"search": "movie"})
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data["total_questions"])
         self.assertEqual(len(data["questions"]), 10)
 
     def test_get_question_search_without_results(self):
-        res = self.client().post("/questions", json={"search": "apple-jacks"})
+        res = self.client().post(
+            "/questions", json={"search": "apple-jacks"})
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data["total_questions"])

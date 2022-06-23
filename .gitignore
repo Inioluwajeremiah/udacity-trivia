@@ -13,4 +13,7 @@ ehthumbs.db
 Thumbs.db
 env/
 frontend/node_modules/
-backend/trivia-b-env
+backend/trivia-b-env/
+trivia.zip
+project.zip
+raw.md

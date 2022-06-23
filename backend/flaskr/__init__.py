@@ -95,6 +95,22 @@ def create_app(test_config=None):
             "total_questions": len(Question.query.all()),
         }), 200
 
+        # selection = Question.query.order_by(Question.id).all()
+        # current_questions = paginate_questions(request, selection)
+
+        # if len(current_questions) == 0:
+        #     abort(404)
+
+        # # This endpoint should return a list of questions,
+        # # number of total questions, current category, categories.
+        # return jsonify({
+        #     'success': True,
+        #     'questions': current_questions,
+        #     'total_questions': len(selection),
+        #     'current_category': [],
+        #     'categories': [cat.type for cat in Category.query.all()],
+        # }), 200
+
     """
     @TODO:
     Create an endpoint to DELETE question using a question ID.
@@ -182,7 +198,7 @@ def create_app(test_config=None):
                 )
 
         except:
-            abort(422)
+            abort(400)
 
     """
     @TODO:
@@ -251,17 +267,17 @@ def create_app(test_config=None):
         body = request.get_json()
         quiz_category = body.get('quiz_category', "")
         previous_questions = body.get('previous_questions', "")
-        print(quiz_category)
 
+        print(quiz_category)
+        print(previous_questions)
         try:
 
-            if quiz_category['id'] == 0:
+            if quiz_category['id']:
                 questions = Question.query.filter(
-                    Question.id.not_in(previous_questions)).all()
+                    Question.category == quiz_category['id']).all()
             else:
                 questions = Question.query.filter(
-                    Question.id.not_in(previous_questions),
-                    Question.category == quiz_category['id']).all()
+                    Question.id.not_in(previous_questions)).all()
 
             random_question = random.choice(questions)
 
@@ -278,6 +294,14 @@ def create_app(test_config=None):
     Create error handlers for all expected errors
     including 404 and 422.
     """
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            'success': False,
+            'error': 400,
+            'message': 'Bad Request'
+        }), 400
+
     @app.errorhandler(404)
     def not_found(error):
         return jsonify({
@@ -285,6 +309,14 @@ def create_app(test_config=None):
             "error": 404,
             "message": "Resource Not Found"
         }), 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return jsonify({
+            "success": False,
+            "error": 405,
+            "message": "Method not allowed"
+        }), 405
 
     @app.errorhandler(422)
     def unprocessable(error):
@@ -294,12 +326,12 @@ def create_app(test_config=None):
             "message": "Unprocessable"
         }), 422
 
-    @app.errorhandler(405)
-    def method_not_allowed(error):
+    @app.errorhandler(500)
+    def internal_server_error(error):
         return jsonify({
-            "success": False,
-            "error": 405,
-            "message": "Method not allowed"
-        }), 405
+            'success': False,
+            'error': 500,
+            'message': 'Internal Server Error.'
+        }), 500
 
     return app
